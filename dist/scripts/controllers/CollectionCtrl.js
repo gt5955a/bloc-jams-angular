@@ -5,7 +5,6 @@
             this.albums.push(angular.copy(albumPicasso));
         }
     }
-})
 
     angular
         .module('blocJams')
