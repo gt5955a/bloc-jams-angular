@@ -2,19 +2,19 @@
     function SongPlayer(Fixtures) {
         var SongPlayer = {};
         
-        /**
+        /** (private)
         * @desc Stores album information
         * @type {Object}
         */
         var currentAlbum = Fixtures.getAlbum();
         
-        /**
+        /** (private)
         * @desc Buzz object audio file
         * @type {Object}
         */
         var currentBuzzObject = null;
         
-        /**
+        /** (private)
         * @function setSong
         * @desc Stops currently playing song and loads new audio file as currentBuzzObject
         * @param {Object} song
@@ -33,7 +33,7 @@
             SongPlayer.currentSong = song;
         };
         
-        /**
+        /** (private)
         * @function playSong
         * @desc Play the current Buzz object
         * @param {Object} song
@@ -41,9 +41,20 @@
         var playSong = function(song) {
             currentBuzzObject.play();
             song.playing = true;
+            SongPlayer.currentAlbum = currentAlbum;
         };
         
-        /**
+        /** (private)
+        * @function stopSong
+        * @desc Stop the current Buzz object
+        * @param {Object} song
+        */
+        var stopSong = function(song) {
+            currentBuzzObject.stop();
+            song.playing = null;
+        };
+        
+        /** (private)
         * @function getSongIndex
         * @desc Gets song index
         * @param {Object} song
@@ -52,13 +63,19 @@
             return currentAlbum.songs.indexOf(song);
         };
         
-        /**
+        /** (public)
         * @desc Current song variable
         * @type {Object}
         */
         SongPlayer.currentSong = null;
+        
+        /** (public)
+        * @desc Current album variable
+        * @type {Object}
+        */
+        SongPlayer.currentAlbum = null;
             
-        /**
+        /** (public)
         * @function SongPlayer.play
         * @desc Establishes conditions for play button and when to play music
         * @param {Object} song
@@ -75,7 +92,7 @@
             }   
         };
         
-        /**
+        /** (public)
         * @function SongPlayer.pause
         * @desc Calls pause method when user clicks pause button; pauses music
         * @param {Object} song 
@@ -86,7 +103,7 @@
             song.playing = false;
         };
         
-        /**
+        /** (public)
         * @function SongPlayer.previous
         * @desc Change to previous song
         * @param {Object} song
@@ -96,8 +113,26 @@
             currentSongIndex--;
             
             if (currentSongIndex < 0) {
-                currentBuzzObject.stop();
-                SongPlayer.currentSong.playing = null;
+                stopSong(SongPlayer.currentSong);
+            } else {
+                var song = currentAlbum.songs[currentSongIndex];
+                setSong(song);
+                playSong(song);
+            }
+        };
+        
+        
+        /** (public)
+        * @function SongPlayer.next
+        * @desc Change to next song
+        * @param {Object} song 
+        */
+        SongPlayer.next = function() {
+            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+            currentSongIndex++;
+            
+            if (currentSongIndex >= currentAlbum.songs.length) {
+                stopSong(SongPlayer.currentSong);
             } else {
                 var song = currentAlbum.songs[currentSongIndex];
                 setSong(song);
