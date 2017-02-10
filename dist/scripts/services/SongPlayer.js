@@ -36,6 +36,12 @@
                 });
             });
             
+            currentBuzzObject.bind('volumechange', function() {
+                $rootScope.$apply(function() {
+                    SongPlayer.volume = currentBuzzObject.getVolume();
+                });
+            });
+            
             SongPlayer.currentSong = song;
         };
         
@@ -75,7 +81,7 @@
         */
         SongPlayer.currentSong = null;
         
-        /**
+        /** (public)
         * @desc Curent playback time (in seconds) of currently playing song
         * @type {Number}
         */
@@ -86,6 +92,12 @@
         * @type {Object}
         */
         SongPlayer.currentAlbum = null;
+        
+        /** (public)
+        * @desc Current volume
+        * @type {Object}
+        */
+        SongPlayer.volume = null;
             
         /** (public)
         * @function SongPlayer.play
@@ -133,7 +145,6 @@
             }
         };
         
-        
         /** (public)
         * @function SongPlayer.next
         * @desc Change to next song
@@ -152,8 +163,7 @@
             }
         };
         
-        
-        /**
+        /** (public)
         * @function setCurrentTime
         * @desc Set current time (in seconds) of currently playing song
         * @param {Number} time
@@ -161,6 +171,17 @@
         SongPlayer.setCurrentTime = function(time) {
             if (currentBuzzObject) {
                 currentBuzzObject.setTime(time);
+            }
+        };
+        
+        /** (public)
+        * @function setVolume
+        * @desc Set current volume
+        * @param {Number} volume
+        */
+        SongPlayer.setVolume = function(volume) {
+            if (currentBuzzObject) {
+                currentBuzzObject.setVolume(volume);
             }
         };
 
