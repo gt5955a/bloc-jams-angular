@@ -53,7 +53,6 @@
         var playSong = function(song) {
             currentBuzzObject.play();
             song.playing = true;
-            SongPlayer.currentAlbum = currentAlbum;
         };
         
         /** (private)
@@ -112,6 +111,7 @@
             } else if (SongPlayer.currentSong === song) {
                 if (currentBuzzObject.isPaused()) {
                     currentBuzzObject.play();
+                        playSong(song);
                 }
             }   
         };
